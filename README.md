@@ -24,7 +24,7 @@ will      MD   B-VP
 narrow    VB   I-VP
 to        TO   B-PP
 only      RB   B-NP
-#         #    I-NP
+\#         #    I-NP
 1.8       CD   I-NP
 billion   CD   I-NP
 in        IN   B-PP
