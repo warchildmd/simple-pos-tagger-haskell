@@ -15,14 +15,14 @@ main = do
     handle <- openFile "train.txt" ReadMode
     fileContents <- hGetContents handle
 
-    let trainData = map (\(x:y:z:_) -> (x, y, z)) $ filter (\x -> x/=[]) $ map words $ init $ lines $ map Char.toLower fileContents
+    let trainData = map (\(x:y:z:_) -> (x, y, z)) $ filter (not . null) $ map words $ init $ lines $ map Char.toLower fileContents
     let strictedTrainData = map (\(x, y, _) -> (x, y)) trainData
     let estrictedTrainData = foldr (\x acc -> if (snd x == ".") then ("", "*"):("", "*"):acc else x:acc) [] strictedTrainData
     let restrictedTrainData = ("", "*"):("", "*"):(foldr (\x acc -> if (wrongTag $ snd x) then acc else x:acc) [] estrictedTrainData)
 
-    let threeTagCount = elementCounts $ map (\[x, y, z] -> (x, y, z)) $ gather 3 $ map (\(_, y) -> y) restrictedTrainData
-    let twoTagCount = elementCounts $ map (\[x, y] -> (x, y)) $ gather 2 $ map (\(_, y) -> y) restrictedTrainData
-    let oneTagCount = elementCounts $ map (\[x] -> x) $ gather 1 $ map (\(_, y) -> y) restrictedTrainData
+    let threeTagCount = elementCounts $ map (\[x, y, z] -> (x, y, z)) $ gather 3 $ map snd restrictedTrainData
+    let twoTagCount = elementCounts $ map (\[x, y] -> (x, y)) $ gather 2 $ map snd restrictedTrainData
+    let oneTagCount = elementCounts $ map (\[x] -> x) $ gather 1 $ map snd restrictedTrainData
 
     let tagWordCount = elementCounts $ restrictedTrainData
 
